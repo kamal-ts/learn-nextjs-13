@@ -1,4 +1,5 @@
 import AddTodos from "./addTodos";
+import DeleteTodos from "./deleteTodos";
 
 type Todos = {
   id: string;
@@ -25,7 +26,7 @@ async function TodosList() {
   return (
     <div className="py-10 px-10">
       <div className="py-4">
-      <AddTodos />
+        <AddTodos />
       </div>
       <div className="border border-slate-600 rounded-lg">
         <table className="table w-full">
@@ -41,23 +42,30 @@ async function TodosList() {
           {(!todos && (
             <tbody>
               <tr>
+                <td>something wrong</td>
+              </tr>
+            </tbody>
+          )) || todos.data.length <= 0 && (
+            <tbody>
+              <tr>
                 <td>no data</td>
               </tr>
             </tbody>
-          )) ||
-            (todos && (
-              <tbody>
-                {todos.data.map((t: Todos, index: number) => (
-                  <tr key={t.id}>
-                    <td>{index + 1}</td>
-                    <td>{t.todo}</td>
-                    <td>{t.isCompleted ? "true" : "false"}</td>
-                    <td>{t.createdAt}</td>
-                    <td></td>
-                  </tr>
-                ))}
-              </tbody>
-            ))}
+          ) || (
+            <tbody>
+              {todos.data.map((t: Todos, index: number) => (
+                <tr key={t.id}>
+                  <td>{index + 1}</td>
+                  <td>{t.todo}</td>
+                  <td>{t.isCompleted ? "true" : "false"}</td>
+                  <td>{t.createdAt}</td>
+                  <td>
+                    <DeleteTodos {...t} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
     </div>

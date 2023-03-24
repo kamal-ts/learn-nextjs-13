@@ -8,6 +8,8 @@ function AddTodos() {
   const [title, setTitle] = useState("");
   const [completed, setCompleted] = useState("");
 
+  const [isMutatingSubmit, setisMutatingSubmit] = useState(false);
+
   const router = useRouter();
   function handleChange() {
     setModal(!modal);
@@ -22,6 +24,7 @@ function AddTodos() {
   async function createTodos(e: SyntheticEvent) {
     e.preventDefault();
 
+    setisMutatingSubmit(true);
     const isCompleted = completed === "true" ? true : false;
 
     await fetch("http://localhost:8000/todos", {
@@ -34,6 +37,8 @@ function AddTodos() {
         isCompleted: isCompleted,
       }),
     });
+    setisMutatingSubmit(false);
+
     setTitle("");
     setCompleted("");
     router.refresh();
@@ -74,10 +79,9 @@ function AddTodos() {
                 Completed
               </label>
               <select
-                value={completed}
-                defaultValue={""}
                 onChange={(e) => setCompleted(e.target.value)}
                 className="select select-bordered w-full"
+                value={completed}
               >
                 <option value={""} disabled selected>
                   Is completed?
@@ -90,9 +94,15 @@ function AddTodos() {
               <button className="btn" type="button" onClick={handleClose}>
                 Close
               </button>
-              <button className="btn btn-primary" type="submit">
-                Save
-              </button>
+              {!isMutatingSubmit ? (
+                <button className="btn btn-primary" type="submit">
+                  Save
+                </button>
+              ) : (
+                <button className="btn loading" type="button">
+                  Saving...
+                </button>
+              )}
             </div>
           </form>
         </div>
