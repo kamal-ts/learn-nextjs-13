@@ -1,5 +1,6 @@
 import AddTodos from "./addTodos";
 import DeleteTodos from "./deleteTodos";
+import UpdateTodos from './updateTodos';
 
 type Todos = {
   id: string;
@@ -59,8 +60,9 @@ async function TodosList() {
                   <td>{t.todo}</td>
                   <td>{t.isCompleted ? "true" : "false"}</td>
                   <td>{t.createdAt}</td>
-                  <td>
+                  <td className="flex gap-2">
                     <DeleteTodos {...t} />
+                    <UpdateTodos {...t}/>
                   </td>
                 </tr>
               ))}
